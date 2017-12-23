@@ -1,30 +1,23 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "Menu.h"
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Green);
+	sf::RenderWindow window(sf::VideoMode(_WINDOW_WIDTH, _WINDOW_HEIGHT), "SFML works!");
+	Menu menu;
 
 	while (window.isOpen())
 	{
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			switch (event.type)
-			{
-				case sf::Event::Closed :
-					window.close();
-					break;
-
-				case sf::Event::TextEntered :
-					std::cout << "Text entered!\n";
-			}
+			menu.handleEvent(event, window);
 		}
 
 		window.clear();
-		window.draw(shape);
+		//window.draw(shape);
+		menu.draw(window);
 		window.display();
 	}
 
