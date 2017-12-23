@@ -2,6 +2,7 @@
 #include <iostream>
 #include "ResourceManager.h"
 #include <climits>
+#include "Menu.h"
 
 AppManager * AppManager::instance = nullptr;
 
@@ -97,7 +98,7 @@ void AppManager::solve()
 			ind_right = ind_tg_left + 1;
 		}
 
-		Point min = points[ind_min];
+		Point P = points[ind_tg_left];
 		Point left = points[ind_left];
 		Point right = points[ind_right];
 
@@ -108,14 +109,14 @@ void AppManager::solve()
 		//if delta == 0 then R is on PQ
 		//if delta < 0 then R is on the right of PQ
 		//if delta > 0 then R is on the left of PQ
-		//in our case, P = min, Q = A, R = left or right
+		//in our case, P = P, Q = A, R = left or right
 		//that is :
 		//delta (P,A,R)
 		// |   1     1        1          |
-		// | min.x  A.x  left or right.x |
-		// | min.y  A.y  left or right.y |
-		int leftSign = A.x * left.y + min.x * A.y + min.y * left.x -
-					   A.x * min.y - left.x * A.y - left.y * min.x;
+		// | P.x  A.x  left or right.x |
+		// | P.y  A.y  left or right.y |
+		int leftSign = A.x * left.y + P.x * A.y + P.y * left.x -
+					   A.x * P.y - left.x * A.y - left.y * P.x;
 
 		if (leftSign < 0)
 			leftSign = -1;
@@ -124,8 +125,8 @@ void AppManager::solve()
 		else
 			leftSign = 0;
 
-		int rightSign = A.x * right.y + min.x * A.y + min.y * right.x -
-						A.x * min.y - right.x * A.y - right.y * min.x;
+		int rightSign = A.x * right.y + P.x * A.y + P.y * right.x -
+						A.x * P.y - right.x * A.y - right.y * P.x;
 
 		if (rightSign < 0)
 			rightSign = -1;
@@ -181,12 +182,12 @@ void AppManager::solve()
 			ind_right = ind_tg_right + 1;
 		}
 
-		Point min = points[ind_min];
+		Point P = points[ind_tg_right];
 		Point left = points[ind_left];
 		Point right = points[ind_right];
 
-		int leftSign = A.x * left.y + min.x * A.y + min.y * left.x -
-			A.x * min.y - left.x * A.y - left.y * min.x;
+		int leftSign = A.x * left.y + P.x * A.y + P.y * left.x -
+			A.x * P.y - left.x * A.y - left.y * P.x;
 
 		if (leftSign < 0)
 			leftSign = -1;
@@ -195,8 +196,8 @@ void AppManager::solve()
 		else
 			leftSign = 0;
 
-		int rightSign = A.x * right.y + min.x * A.y + min.y * right.x -
-			A.x * min.y - right.x * A.y - right.y * min.x;
+		int rightSign = A.x * right.y + P.x * A.y + P.y * right.x -
+			A.x * P.y - right.x * A.y - right.y * P.x;
 
 		if (rightSign < 0)
 			rightSign = -1;
@@ -259,7 +260,11 @@ void AppManager::solve()
 	shape.setPointCount(nr_now);
 	for (int i = 0; i < shape.getPointCount(); i++)
 	{
-		shape.setPoint(i, sf::Vector2f(convexHullPoints[i].x * 100.f, convexHullPoints[i].y * 100.f));
+		double x_coord, y_coord;
+
+		x_coord = _WINDOW_WIDTH / 2 + convexHullPoints[i].x * ((_WINDOW_WIDTH / 2) / _MAX_X_VALUE);
+		y_coord = _WINDOW_HEIGHT / 2 - convexHullPoints[i].y * ((_WINDOW_HEIGHT / 2) / _MAX_Y_VALUE); //- pt ca y-ul creste de sus in jos pe window
+		shape.setPoint(i, sf::Vector2f(x_coord, y_coord));
 	}
 
 	ResourceManager::getInstance()->setConvexShape(shape);

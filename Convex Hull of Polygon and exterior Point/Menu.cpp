@@ -37,6 +37,13 @@ Menu::Menu()
 	generalText.setFont(font);
 	generalText.setFillColor(sf::Color::Black);
 	generalText.setString("Welcome! Enter your data to continue!\n");
+
+	//for the latter part
+	OX[0] = sf::Vertex(sf::Vector2f(0.f, _WINDOW_HEIGHT / 2));
+	OX[1] = sf::Vertex(sf::Vector2f(_WINDOW_WIDTH, _WINDOW_HEIGHT / 2));
+
+	OY[0] = sf::Vertex(sf::Vector2f(_WINDOW_WIDTH / 2, _WINDOW_HEIGHT));
+	OY[1] = sf::Vertex(sf::Vector2f(_WINDOW_WIDTH / 2, 0.f));
 }
 
 
@@ -62,6 +69,8 @@ void Menu::draw(sf::RenderWindow & window)
 
 	if (ResourceManager::getInstance()->getConvexShape().getPointCount() > 0)
 	{
+		window.draw(OX, 2, sf::Lines);
+		window.draw(OY, 2, sf::Lines);
 		window.draw(ResourceManager::getInstance()->getConvexShape());
 		std::cout << "OSAL\n";
 	}

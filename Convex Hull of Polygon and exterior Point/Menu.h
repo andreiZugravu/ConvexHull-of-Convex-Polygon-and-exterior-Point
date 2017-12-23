@@ -8,6 +8,9 @@
 #define _WINDOW_WIDTH 1000
 #define _WINDOW_HEIGHT 800
 
+#define _MAX_X_VALUE 20
+#define _MAX_Y_VALUE 20
+
 class Menu
 {
 	private:
@@ -27,6 +30,9 @@ class Menu
 		sf::RectangleShape container;
 
 		int state;
+
+		sf::Vertex OX[2];
+		sf::Vertex OY[2];
 
 	public:
 		Menu();
