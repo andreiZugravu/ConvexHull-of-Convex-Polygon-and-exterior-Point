@@ -59,6 +59,12 @@ void Menu::draw(sf::RenderWindow & window)
 	window.draw(nText);
 	
 	window.draw(generalText);
+
+	if (ResourceManager::getInstance()->getConvexShape().getPointCount() > 0)
+	{
+		window.draw(ResourceManager::getInstance()->getConvexShape());
+		std::cout << "OSAL\n";
+	}
 }
 
 void Menu::handleEvent(sf::Event event, sf::RenderWindow & window)

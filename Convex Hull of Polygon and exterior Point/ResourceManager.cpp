@@ -18,6 +18,7 @@ ResourceManager * ResourceManager::getInstance()
 	if (instance == nullptr)
 	{
 		instance = new ResourceManager();
+		instance->polyToDraw.setPointCount(0);
 	}
 
 	return instance;
@@ -75,4 +76,14 @@ std::vector < Point > ResourceManager::getPoints()
 		V[i] = vertices[i];
 
 	return V;
+}
+
+sf::ConvexShape ResourceManager::getConvexShape()
+{
+	return polyToDraw;
+}
+
+void ResourceManager::setConvexShape(sf::ConvexShape shape)
+{
+	polyToDraw = shape;
 }

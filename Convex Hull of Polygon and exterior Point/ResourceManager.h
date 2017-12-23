@@ -52,4 +52,7 @@ class ResourceManager
 		void addVertexToVerticesArray(sf::Vertex vertex);
 
 		std::vector < Point > getPoints();
+
+		sf::ConvexShape getConvexShape();
+		void setConvexShape(sf::ConvexShape shape);
 };
