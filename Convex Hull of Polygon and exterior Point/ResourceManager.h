@@ -3,6 +3,21 @@
 #include <SFML\Graphics\ConvexShape.hpp>
 #include <vector>
 
+struct Point {
+	double x, y;
+
+	Point()
+	{
+
+	}
+
+	Point(sf::Vertex v)
+	{
+		x = v.position.x;
+		y = v.position.y;
+	}
+};
+
 class ResourceManager
 {
 	private:
@@ -11,6 +26,10 @@ class ResourceManager
 		int n;
 		sf::VertexArray vertices;
 		sf::Vertex A;
+
+		sf::ConvexShape polyToDraw;
+
+		std::vector < Point > V;
 
 		ResourceManager();
 		~ResourceManager();
@@ -31,4 +50,6 @@ class ResourceManager
 
 		//other methods
 		void addVertexToVerticesArray(sf::Vertex vertex);
+
+		std::vector < Point > getPoints();
 };

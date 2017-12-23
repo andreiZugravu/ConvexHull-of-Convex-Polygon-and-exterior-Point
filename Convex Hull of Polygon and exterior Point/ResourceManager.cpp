@@ -66,3 +66,13 @@ void ResourceManager::addVertexToVerticesArray(sf::Vertex vertex)
 {
 	vertices.append(vertex);
 }
+
+std::vector < Point > ResourceManager::getPoints()
+{
+	V.resize(n);
+
+	for (int i = 0; i < n; i++)
+		V[i] = vertices[i];
+
+	return V;
+}

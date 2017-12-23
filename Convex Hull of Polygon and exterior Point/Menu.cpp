@@ -1,6 +1,7 @@
 #include "Menu.h"
 #include <iostream>
 #include "ResourceManager.h"
+#include "AppManager.h"
 
 extern ResourceManager * instance;
 
@@ -208,7 +209,6 @@ void Menu::handleEvent(sf::Event event, sf::RenderWindow & window)
 
 					case 2 :
 						//retrieve exterior point
-						std::cout << focus << "\n";
 						if (event.key.code == sf::Keyboard::BackSpace)
 						{
 							if (focus == 'x')
@@ -269,6 +269,9 @@ void Menu::handleEvent(sf::Event event, sf::RenderWindow & window)
 								yText.setCharacterSize(0);
 								yText.setFillColor(container.getFillColor());
 								yText.setString("");
+
+								//solve problem
+								AppManager::getInstance()->solve();
 							}
 						}
 						else

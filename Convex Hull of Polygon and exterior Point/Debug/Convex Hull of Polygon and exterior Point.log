@@ -1,10 +1,2 @@
-﻿  Menu.cpp
-d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(95): warning C4018: '<': signed/unsigned mismatch
-d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(166): warning C4018: '<': signed/unsigned mismatch
-d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(171): warning C4018: '<': signed/unsigned mismatch
-d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(174): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(237): warning C4018: '<': signed/unsigned mismatch
-d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(242): warning C4018: '<': signed/unsigned mismatch
-d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(245): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  Convex Hull of Polygon and exterior Point.vcxproj -> D:\Convex Hull of Polygon and exterior Point\Convex Hull of Polygon and exterior Point\Debug\Convex Hull of Polygon and exterior Point.exe
+﻿  Convex Hull of Polygon and exterior Point.vcxproj -> D:\Convex Hull of Polygon and exterior Point\Convex Hull of Polygon and exterior Point\Debug\Convex Hull of Polygon and exterior Point.exe
   Convex Hull of Polygon and exterior Point.vcxproj -> D:\Convex Hull of Polygon and exterior Point\Convex Hull of Polygon and exterior Point\Debug\Convex Hull of Polygon and exterior Point.pdb (Full PDB)

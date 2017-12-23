@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Menu.h"
+#include "ResourceManager.h"
 
 int main()
 {
@@ -20,6 +21,8 @@ int main()
 		menu.draw(window);
 		window.display();
 	}
+
+	ResourceManager::getInstance()->freeResources();
 
 	return 0;
 }
