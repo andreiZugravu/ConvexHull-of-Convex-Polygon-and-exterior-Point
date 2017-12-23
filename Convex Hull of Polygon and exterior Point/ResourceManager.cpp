@@ -64,5 +64,5 @@ void ResourceManager::setExteriorPoint(sf::Vertex ExteriorPoint)
 //other methods
 void ResourceManager::addVertexToVerticesArray(sf::Vertex vertex)
 {
-	//add
+	vertices.append(vertex);
 }

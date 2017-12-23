@@ -6,7 +6,6 @@ extern ResourceManager * instance;
 
 Menu::Menu()
 {
-	static int counter = 0;
 	state = 0;
 
 	if (!font.loadFromFile("Crimson-Bold.otf"))
@@ -63,7 +62,14 @@ void Menu::draw(sf::RenderWindow & window)
 
 void Menu::handleEvent(sf::Event event, sf::RenderWindow & window)
 {
-	extern int counter;
+	static int counter = 0;
+	static char focus = 'x';
+
+	//0 = 26, 9 - 35
+	char numbers[36];
+	for (int i = 0; i < 10; i++)
+		numbers[i + 26] = '0' + i;
+
 	switch (event.type)
 	{
 		case sf::Event::KeyPressed :
@@ -75,11 +81,6 @@ void Menu::handleEvent(sf::Event event, sf::RenderWindow & window)
 				{
 					case 0 :
 						//retrieve n
-						//0 = 26, 9 - 35
-						char numbers[36];
-						for (int i = 0; i < 10; i++)
-							numbers[i + 26] = '0' + i;
-						
 						if (event.key.code == sf::Keyboard::BackSpace)
 						{
 							if (nText.getString().getSize() > 4)
@@ -88,11 +89,20 @@ void Menu::handleEvent(sf::Event event, sf::RenderWindow & window)
 						else if (event.key.code == sf::Keyboard::Return)
 						{
 							//calculate n
-							state++; //move to next state
+							std::string number = nText.getString().substring(4, nText.getString().getSize() - 4);
+							int n = 0;
+							int i = 0;
+							while (i < number.size()) n = n * 10 + (number[i++] - '0');
+							ResourceManager::getInstance()->setNrVertices(n);
+
+							//move to next state
+							state++;
+
 							//eliminate button. don't overcomplicate the draw function
 							nButton.setPosition(sf::Vector2f(0.f, 0.f));
 							nButton.setSize(sf::Vector2f(0.f, 0.f));
 							nButton.setFillColor(container.getFillColor());
+
 							//eliminate the text for the button
 							nText.setPosition(nButton.getPosition());
 							nText.setCharacterSize(0);
@@ -126,14 +136,158 @@ void Menu::handleEvent(sf::Event event, sf::RenderWindow & window)
 
 					case 1 :
 						//retrieve polygon points
-						if (counter < 1)
+						if (counter < ResourceManager::getInstance() -> getNrVertices())
 						{
+							if (event.key.code == sf::Keyboard::BackSpace)
+							{
+								if (focus == 'x')
+								{
+									if (xText.getString().getSize() > 4)
+										xText.setString(xText.getString().substring(0, xText.getString().getSize() - 1));
+								}
+								else if(focus == 'y')
+								{
+									if (yText.getString().getSize() > 4)
+										yText.setString(yText.getString().substring(0, yText.getString().getSize() - 1));
+								}
+							}
+							else if (event.key.code == sf::Keyboard::Return)
+							{
+								if (focus == 'x')
+								{
+									focus = 'y';
+								}
+								else if (focus == 'y')
+								{
+									//compute vertex coordinates
+									std::string number = xText.getString().substring(4, xText.getString().getSize() - 4);
+									int x = 0;
+									int i = 0;
+									while (i < number.size()) x = x * 10 + (number[i++] - '0');
 
+									number = yText.getString().substring(4, yText.getString().getSize() - 4);
+									int y = 0;
+									i = 0;
+									while (i < number.size()) y = y * 10 + (number[i++] - '0');
+									
+									//add vertex
+									ResourceManager::getInstance()->addVertexToVerticesArray(sf::Vertex(sf::Vector2f(x, y)));
+									
+									//refocus and increase counter
+									focus = 'x';
+									counter++;
+
+									//refresh xText and yText
+									xText.setString("x = ");
+									yText.setString("y = ");
+
+									if (counter == ResourceManager::getInstance()->getNrVertices())
+									{
+										state++;
+										counter = 0;
+										focus = 'x';
+										xText.setString("x = ");
+										yText.setString("y = ");
+									}
+								}
+							}
+							else
+							{
+								if (focus == 'x')
+								{
+									xText.setString(xText.getString() + numbers[event.key.code]);
+								}
+								else if (focus == 'y')
+								{
+									yText.setString(yText.getString() + numbers[event.key.code]);
+								}
+							}
 						}
+
 						break;
 
 					case 2 :
 						//retrieve exterior point
+						std::cout << focus << "\n";
+						if (event.key.code == sf::Keyboard::BackSpace)
+						{
+							if (focus == 'x')
+							{
+								if (xText.getString().getSize() > 4)
+									xText.setString(xText.getString().substring(0, xText.getString().getSize() - 1));
+							}
+							else if (focus == 'y')
+							{
+								if (yText.getString().getSize() > 4)
+									yText.setString(yText.getString().substring(0, yText.getString().getSize() - 1));
+							}
+						}
+						else if (event.key.code == sf::Keyboard::Return)
+						{
+							if (focus == 'x')
+							{
+								focus = 'y';
+							}
+							else if (focus == 'y')
+							{
+								//compute vertex coordinates
+								std::string number = xText.getString().substring(4, xText.getString().getSize() - 4);
+								int x = 0;
+								int i = 0;
+								while (i < number.size()) x = x * 10 + (number[i++] - '0');
+
+								number = yText.getString().substring(4, yText.getString().getSize() - 4);
+								int y = 0;
+								i = 0;
+								while (i < number.size()) y = y * 10 + (number[i++] - '0');
+
+								//add vertex
+								ResourceManager::getInstance()->setExteriorPoint(sf::Vertex(sf::Vector2f(x, y)));
+
+								//reset focus
+								focus = 'x';
+
+								//move to next state
+								state++;
+
+								//get rid of these buttons
+								xButton.setPosition(sf::Vector2f(0.f, 0.f));
+								xButton.setSize(sf::Vector2f(0.f, 0.f));
+								xButton.setFillColor(container.getFillColor());
+
+								yButton.setPosition(sf::Vector2f(0.f, 0.f));
+								yButton.setSize(sf::Vector2f(0.f, 0.f));
+								yButton.setFillColor(container.getFillColor());
+
+								//eliminate the text for the buttons
+								xText.setPosition(nButton.getPosition());
+								xText.setCharacterSize(0);
+								xText.setFillColor(container.getFillColor());
+								xText.setString("");
+
+								yText.setPosition(nButton.getPosition());
+								yText.setCharacterSize(0);
+								yText.setFillColor(container.getFillColor());
+								yText.setString("");
+							}
+						}
+						else
+						{
+							if (focus == 'x')
+							{
+								xText.setString(xText.getString() + numbers[event.key.code]);
+							}
+							else if (focus == 'y')
+							{
+								yText.setString(yText.getString() + numbers[event.key.code]);
+							}
+						}
+
+						break;
+
+					case 3 :
+
+						break;
 
 					default :
 						break;

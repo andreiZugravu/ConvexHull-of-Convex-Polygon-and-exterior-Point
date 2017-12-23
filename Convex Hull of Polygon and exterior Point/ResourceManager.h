@@ -16,7 +16,7 @@ class ResourceManager
 		~ResourceManager();
 
 	public:
-		ResourceManager * getInstance();
+		static ResourceManager * getInstance();
 		void freeResources();
 
 		//getters
@@ -30,8 +30,5 @@ class ResourceManager
 		void setExteriorPoint(sf::Vertex ExteriorPoint);
 
 		//other methods
-		void addVertexToVerticesArray(sf::Vertex vertex)
-		{
-
-		}
+		void addVertexToVerticesArray(sf::Vertex vertex);
 };
