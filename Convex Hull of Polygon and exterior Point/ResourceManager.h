@@ -30,6 +30,7 @@ class ResourceManager
 		sf::ConvexShape polyToDraw;
 
 		std::vector < Point > V;
+		std::vector < Point> convexHullPoints;
 
 		ResourceManager();
 		~ResourceManager();
@@ -55,4 +56,7 @@ class ResourceManager
 
 		sf::ConvexShape getConvexShape();
 		void setConvexShape(sf::ConvexShape shape);
+
+		std::vector < Point > getConvexHullPoints();
+		void setConvexHullPoints(Point[], int);
 };

@@ -250,6 +250,8 @@ void AppManager::solve()
 			follow_right_tg++;
 	}
 
+	ResourceManager::getInstance()->setConvexHullPoints(convexHullPoints, nr_now);
+
 	for (int i = 0; i < nr_now; i++)
 		std::cout << convexHullPoints[i].x << " " << convexHullPoints[i].y << "\n";
 

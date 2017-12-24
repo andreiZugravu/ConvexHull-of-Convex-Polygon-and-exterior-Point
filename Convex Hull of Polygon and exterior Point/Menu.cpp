@@ -3,6 +3,7 @@
 #include "ResourceManager.h"
 #include "AppManager.h"
 #include <string>
+#include <vector>
 
 extern ResourceManager * instance;
 
@@ -46,7 +47,7 @@ Menu::Menu()
 	OY[0] = sf::Vertex(sf::Vector2f(_WINDOW_WIDTH / 2, _WINDOW_HEIGHT));
 	OY[1] = sf::Vertex(sf::Vector2f(_WINDOW_WIDTH / 2, 0.f));
 
-	int val_x = -20;
+	int val_x = -_MAX_X_VALUE;
 	for (int i = 0; i < (_WINDOW_WIDTH / _MAX_X_VALUE) * 2; i++)
 	{
 		OX_points[i][0] = sf::Vertex(sf::Vector2f(((_WINDOW_WIDTH / _MAX_X_VALUE) / 2) * i, _WINDOW_HEIGHT / 2 - halfLen));
@@ -63,7 +64,7 @@ Menu::Menu()
 		}
 	}
 
-	int val_y = 20;
+	int val_y = _MAX_Y_VALUE;
 	for (int i = 0; i < (_WINDOW_HEIGHT / _MAX_Y_VALUE) * 2; i++)
 	{
 		OY_points[i][0] = sf::Vertex(sf::Vector2f(_WINDOW_WIDTH / 2 - halfLen, ((_WINDOW_HEIGHT / _MAX_Y_VALUE) / 2)* i));
@@ -124,7 +125,31 @@ void Menu::draw(sf::RenderWindow & window)
 		}
 
 		window.draw(ResourceManager::getInstance()->getConvexShape());
+
+		for (int i = 0; i < ResourceManager::getInstance()->getConvexShape().getPointCount(); i++)
+			window.draw(convexHullPoints_text[i]);
+
 		std::cout << "OSAL\n";
+	}
+}
+
+void Menu::setConvexHullPoints_text()
+{
+	sf::ConvexShape shape = ResourceManager::getInstance()->getConvexShape();
+
+	int n = shape.getPointCount();
+	convexHullPoints_text = new sf::Text[n];
+
+	std::vector < Point> convexHullPoints = ResourceManager::getInstance()->getConvexHullPoints();
+
+	for (int i = 0; i < n; i++)
+	{
+		sf::Vertex v = shape.getPoint(i);
+
+		convexHullPoints_text[i].setPosition(sf::Vector2f(v.position.x, v.position.y));
+		convexHullPoints_text[i].setFont(font);
+		convexHullPoints_text[i].setCharacterSize(15);
+		convexHullPoints_text[i].setString("(" + std::to_string((int)convexHullPoints[i].x) + "," + std::to_string((int)convexHullPoints[i].y) + ")");
 	}
 }
 
@@ -345,6 +370,9 @@ void Menu::handleEvent(sf::Event event, sf::RenderWindow & window)
 
 								//solve problem
 								AppManager::getInstance()->solve();
+
+								//get text for convex hull points
+								setConvexHullPoints_text();
 							}
 						}
 						else

@@ -8,8 +8,8 @@
 #define _WINDOW_WIDTH 1000
 #define _WINDOW_HEIGHT 800
 
-#define _MAX_X_VALUE 20
-#define _MAX_Y_VALUE 20
+#define _MAX_X_VALUE 10
+#define _MAX_Y_VALUE 10
 
 #define halfLen 2
 
@@ -43,6 +43,10 @@ class Menu
 
 		sf::Text OX_points_text[(_WINDOW_WIDTH / _MAX_X_VALUE) * 2];
 		sf::Text OY_points_text[(_WINDOW_HEIGHT / _MAX_Y_VALUE) * 2];
+
+		sf::Text * convexHullPoints_text;
+
+		void setConvexHullPoints_text();
 
 	public:
 		Menu();

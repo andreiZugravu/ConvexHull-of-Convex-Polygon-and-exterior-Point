@@ -87,3 +87,16 @@ void ResourceManager::setConvexShape(sf::ConvexShape shape)
 {
 	polyToDraw = shape;
 }
+
+std::vector < Point > ResourceManager::getConvexHullPoints()
+{
+	return convexHullPoints;
+}
+
+void ResourceManager::setConvexHullPoints(Point points[], int n)
+{
+	convexHullPoints.resize(n);
+
+	for (int i = 0; i < n; i++)
+		convexHullPoints[i] = points[i];
+}

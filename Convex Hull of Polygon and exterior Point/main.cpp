@@ -17,7 +17,6 @@ int main()
 		}
 
 		window.clear();
-		//window.draw(shape);
 		menu.draw(window);
 		window.display();
 	}
