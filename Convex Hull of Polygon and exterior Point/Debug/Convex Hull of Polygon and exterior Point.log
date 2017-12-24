@@ -1,9 +1,16 @@
-﻿  AppManager.cpp
-d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\appmanager.cpp(119): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\appmanager.cpp(129): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\appmanager.cpp(190): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\appmanager.cpp(200): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\appmanager.cpp(261): warning C4018: '<': signed/unsigned mismatch
-d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\appmanager.cpp(267): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+﻿  Menu.cpp
+d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(52): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(53): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(57): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(69): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(70): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(78): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(163): warning C4018: '<': signed/unsigned mismatch
+d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(234): warning C4018: '<': signed/unsigned mismatch
+d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(239): warning C4018: '<': signed/unsigned mismatch
+d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(242): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(304): warning C4018: '<': signed/unsigned mismatch
+d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(309): warning C4018: '<': signed/unsigned mismatch
+d:\convex hull of polygon and exterior point\convex hull of polygon and exterior point\convex hull of polygon and exterior point\menu.cpp(312): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Convex Hull of Polygon and exterior Point.vcxproj -> D:\Convex Hull of Polygon and exterior Point\Convex Hull of Polygon and exterior Point\Debug\Convex Hull of Polygon and exterior Point.exe
   Convex Hull of Polygon and exterior Point.vcxproj -> D:\Convex Hull of Polygon and exterior Point\Convex Hull of Polygon and exterior Point\Debug\Convex Hull of Polygon and exterior Point.pdb (Full PDB)

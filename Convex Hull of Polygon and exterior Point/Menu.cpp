@@ -2,6 +2,7 @@
 #include <iostream>
 #include "ResourceManager.h"
 #include "AppManager.h"
+#include <string>
 
 extern ResourceManager * instance;
 
@@ -44,6 +45,45 @@ Menu::Menu()
 
 	OY[0] = sf::Vertex(sf::Vector2f(_WINDOW_WIDTH / 2, _WINDOW_HEIGHT));
 	OY[1] = sf::Vertex(sf::Vector2f(_WINDOW_WIDTH / 2, 0.f));
+
+	int val_x = -20;
+	for (int i = 0; i < (_WINDOW_WIDTH / _MAX_X_VALUE) * 2; i++)
+	{
+		OX_points[i][0] = sf::Vertex(sf::Vector2f(((_WINDOW_WIDTH / _MAX_X_VALUE) / 2) * i, _WINDOW_HEIGHT / 2 - halfLen));
+		OX_points[i][1] = sf::Vertex(sf::Vector2f(((_WINDOW_WIDTH / _MAX_X_VALUE) / 2) * i, _WINDOW_HEIGHT / 2 + halfLen));
+
+		if (i % jump == 0)
+		{
+			OX_points_text[i].setPosition(sf::Vector2f(((_WINDOW_WIDTH / _MAX_X_VALUE) / 2) * i, _WINDOW_HEIGHT / 2 + halfLen + halfLen));
+			OX_points_text[i].setFont(font);
+			OX_points_text[i].setCharacterSize(10);
+			OX_points_text[i].setString(std::to_string(val_x));
+
+			val_x += jump;
+		}
+	}
+
+	int val_y = 20;
+	for (int i = 0; i < (_WINDOW_HEIGHT / _MAX_Y_VALUE) * 2; i++)
+	{
+		OY_points[i][0] = sf::Vertex(sf::Vector2f(_WINDOW_WIDTH / 2 - halfLen, ((_WINDOW_HEIGHT / _MAX_Y_VALUE) / 2)* i));
+		OY_points[i][1] = sf::Vertex(sf::Vector2f(_WINDOW_WIDTH / 2 + halfLen, ((_WINDOW_HEIGHT / _MAX_Y_VALUE) / 2)* i));
+
+		if (i % jump == 0)
+		{
+			if (val_y == 0)
+				val_y -= jump;
+			else
+			{
+				OY_points_text[i].setPosition(sf::Vector2f(sf::Vector2f(_WINDOW_WIDTH / 2 - halfLen * 8, ((_WINDOW_HEIGHT / _MAX_Y_VALUE) / 2)* i - halfLen * 3)));
+				OY_points_text[i].setFont(font);
+				OY_points_text[i].setCharacterSize(10);
+				OY_points_text[i].setString(std::to_string(val_y));
+
+				val_y -= jump;
+			}
+		}
+	}
 }
 
 
@@ -71,6 +111,18 @@ void Menu::draw(sf::RenderWindow & window)
 	{
 		window.draw(OX, 2, sf::Lines);
 		window.draw(OY, 2, sf::Lines);
+
+		for (int i = 0; i < (_WINDOW_WIDTH / _MAX_X_VALUE) * 2; i++)
+		{
+			window.draw(OX_points[i], 2, sf::Lines);
+			window.draw(OX_points_text[i]);
+		}
+		for (int i = 0; i < (_WINDOW_HEIGHT / _MAX_Y_VALUE) * 2; i++)
+		{
+			window.draw(OY_points[i], 2, sf::Lines);
+			window.draw(OY_points_text[i]);
+		}
+
 		window.draw(ResourceManager::getInstance()->getConvexShape());
 		std::cout << "OSAL\n";
 	}
@@ -284,6 +336,12 @@ void Menu::handleEvent(sf::Event event, sf::RenderWindow & window)
 								yText.setCharacterSize(0);
 								yText.setFillColor(container.getFillColor());
 								yText.setString("");
+
+								//eliminate text for general button
+								generalText.setPosition(sf::Vector2f(0.f, 0.f));
+								generalText.setCharacterSize(0);
+								generalText.setFillColor(container.getFillColor());
+								generalText.setString("");
 
 								//solve problem
 								AppManager::getInstance()->solve();

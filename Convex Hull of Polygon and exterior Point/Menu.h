@@ -11,6 +11,10 @@
 #define _MAX_X_VALUE 20
 #define _MAX_Y_VALUE 20
 
+#define halfLen 2
+
+#define jump 5
+
 class Menu
 {
 	private:
@@ -33,6 +37,12 @@ class Menu
 
 		sf::Vertex OX[2];
 		sf::Vertex OY[2];
+
+		sf::Vertex OX_points[(_WINDOW_WIDTH / _MAX_X_VALUE) * 2][2];
+		sf::Vertex OY_points[(_WINDOW_HEIGHT / _MAX_Y_VALUE) * 2][2];
+
+		sf::Text OX_points_text[(_WINDOW_WIDTH / _MAX_X_VALUE) * 2];
+		sf::Text OY_points_text[(_WINDOW_HEIGHT / _MAX_Y_VALUE) * 2];
 
 	public:
 		Menu();
