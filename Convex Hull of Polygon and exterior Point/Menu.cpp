@@ -19,6 +19,7 @@ Menu::Menu()
 
 	xText.setFont(font);
 	yText.setFont(font);
+	helpText.setFont(font);
 
 	nButton.setPosition(sf::Vector2f(_WINDOW_WIDTH / 3 + 90.f, 100.f));
 	nButton.setSize(sf::Vector2f(150.f, 100.f));
@@ -106,6 +107,8 @@ void Menu::draw(sf::RenderWindow & window)
 	window.draw(nButton);
 	window.draw(nText);
 	
+	window.draw(helpText);
+
 	window.draw(generalText);
 
 	if (ResourceManager::getInstance()->getConvexShape().getPointCount() > 0)
@@ -128,8 +131,6 @@ void Menu::draw(sf::RenderWindow & window)
 
 		for (int i = 0; i < ResourceManager::getInstance()->getConvexShape().getPointCount(); i++)
 			window.draw(convexHullPoints_text[i]);
-
-		std::cout << "OSAL\n";
 	}
 }
 
@@ -221,6 +222,12 @@ void Menu::handleEvent(sf::Event event, sf::RenderWindow & window)
 							yText.setFillColor(sf::Color::Black);
 							yText.setString("y = ");
 
+							//add text help
+							helpText.setPosition(xButton.getPosition().x + 300.f, xButton.getPosition().y + 30.f);
+							helpText.setCharacterSize(24);
+							helpText.setFillColor(sf::Color::Black);
+							helpText.setString("");
+
 						}
 						else
 							nText.setString(nText.getString() + numbers[event.key.code]);
@@ -244,6 +251,23 @@ void Menu::handleEvent(sf::Event event, sf::RenderWindow & window)
 										yText.setString(yText.getString().substring(0, yText.getString().getSize() - 1));
 								}
 							}
+							else if (event.key.code == 56) //minus, adica '-'
+							{
+								if (focus == 'x')
+								{
+									if(xText.getString()[4] != '-')
+										xText.setString("x = -" + xText.getString().substring(4, xText.getString().getSize() - 4));
+									else
+										xText.setString("x = " + xText.getString().substring(5, xText.getString().getSize() - 5));
+								}
+								else
+								{
+									if (yText.getString()[4] != '-')
+										yText.setString("y = -" + yText.getString().substring(4, yText.getString().getSize() - 4));
+									else
+										yText.setString("y = " + yText.getString().substring(5, yText.getString().getSize() - 5));
+								}
+							}
 							else if (event.key.code == sf::Keyboard::Return)
 							{
 								if (focus == 'x')
@@ -253,15 +277,31 @@ void Menu::handleEvent(sf::Event event, sf::RenderWindow & window)
 								else if (focus == 'y')
 								{
 									//compute vertex coordinates
-									std::string number = xText.getString().substring(4, xText.getString().getSize() - 4);
+									std::string numberx = xText.getString().substring(4, xText.getString().getSize() - 4);
 									int x = 0;
 									int i = 0;
-									while (i < number.size()) x = x * 10 + (number[i++] - '0');
-
-									number = yText.getString().substring(4, yText.getString().getSize() - 4);
+									bool xneg = false;
+									if (numberx[0] == '-')
+									{
+										i++;
+										xneg = true;
+									}
+									while (i < numberx.size()) x = x * 10 + (numberx[i++] - '0');
+									if (xneg)
+										x *= -1;
+									
+									std::string numbery = yText.getString().substring(4, yText.getString().getSize() - 4);
 									int y = 0;
 									i = 0;
-									while (i < number.size()) y = y * 10 + (number[i++] - '0');
+									bool yneg = false;
+									if (numbery[0] == '-')
+									{
+										i++;
+										yneg = true;
+									}
+									while (i < numbery.size()) y = y * 10 + (numbery[i++] - '0');
+									if (yneg)
+										y *= -1;
 									
 									//add vertex
 									ResourceManager::getInstance()->addVertexToVerticesArray(sf::Vertex(sf::Vector2f(x, y)));
@@ -270,6 +310,9 @@ void Menu::handleEvent(sf::Event event, sf::RenderWindow & window)
 									focus = 'x';
 									counter++;
 
+									//update helpText
+									helpText.setString(helpText.getString() + std::to_string(counter) + ". " + "(" + numberx + "," + numbery + ")" + "\n");
+									
 									//refresh xText and yText
 									xText.setString("x = ");
 									yText.setString("y = ");
@@ -281,6 +324,7 @@ void Menu::handleEvent(sf::Event event, sf::RenderWindow & window)
 										focus = 'x';
 										xText.setString("x = ");
 										yText.setString("y = ");
+										helpText.setString(helpText.getString() + "Set the exterior point");
 									}
 								}
 							}
@@ -314,6 +358,23 @@ void Menu::handleEvent(sf::Event event, sf::RenderWindow & window)
 									yText.setString(yText.getString().substring(0, yText.getString().getSize() - 1));
 							}
 						}
+						else if (event.key.code == 56) //minus, adica '-'
+						{
+							if (focus == 'x')
+							{
+								if (xText.getString()[4] != '-')
+									xText.setString("x = -" + xText.getString().substring(4, xText.getString().getSize() - 4));
+								else
+									xText.setString("x = " + xText.getString().substring(5, xText.getString().getSize() - 5));
+							}
+							else
+							{
+								if (yText.getString()[4] != '-')
+									yText.setString("y = -" + yText.getString().substring(4, yText.getString().getSize() - 4));
+								else
+									yText.setString("y = " + yText.getString().substring(5, yText.getString().getSize() - 5));
+							}
+						}
 						else if (event.key.code == sf::Keyboard::Return)
 						{
 							if (focus == 'x')
@@ -323,15 +384,31 @@ void Menu::handleEvent(sf::Event event, sf::RenderWindow & window)
 							else if (focus == 'y')
 							{
 								//compute vertex coordinates
-								std::string number = xText.getString().substring(4, xText.getString().getSize() - 4);
+								std::string numberx = xText.getString().substring(4, xText.getString().getSize() - 4);
 								int x = 0;
 								int i = 0;
-								while (i < number.size()) x = x * 10 + (number[i++] - '0');
+								bool xneg = false;
+								if (numberx[0] == '-')
+								{
+									i++;
+									xneg = true;
+								}
+								while (i < numberx.size()) x = x * 10 + (numberx[i++] - '0');
+								if (xneg)
+									x *= -1;
 
-								number = yText.getString().substring(4, yText.getString().getSize() - 4);
+								std::string numbery = yText.getString().substring(4, yText.getString().getSize() - 4);
 								int y = 0;
 								i = 0;
-								while (i < number.size()) y = y * 10 + (number[i++] - '0');
+								bool yneg = false;
+								if (numbery[0] == '-')
+								{
+									i++;
+									yneg = true;
+								}
+								while (i < numbery.size()) y = y * 10 + (numbery[i++] - '0');
+								if (yneg)
+									y *= -1;
 
 								//add vertex
 								ResourceManager::getInstance()->setExteriorPoint(sf::Vertex(sf::Vector2f(x, y)));
@@ -367,6 +444,12 @@ void Menu::handleEvent(sf::Event event, sf::RenderWindow & window)
 								generalText.setCharacterSize(0);
 								generalText.setFillColor(container.getFillColor());
 								generalText.setString("");
+
+								//eliminate text for help
+								helpText.setPosition(sf::Vector2f(0.f, 0.f));
+								helpText.setCharacterSize(0);
+								helpText.setFillColor(container.getFillColor());
+								helpText.setString("");
 
 								//solve problem
 								AppManager::getInstance()->solve();

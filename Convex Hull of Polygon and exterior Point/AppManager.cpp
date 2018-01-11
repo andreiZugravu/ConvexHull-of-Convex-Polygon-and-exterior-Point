@@ -66,168 +66,226 @@ void AppManager::solve()
 		}
 
 	}
+	std::cout << points[ind_min].x << " " << points[ind_min].y << " " << dist_min << "\n";
 
 	//step 2
 	//step 2.1. move to the left and get the tangent
 	int ind_tg_left;
 	int skipped_left = 1;
-	if (ind_min == 0)
-		ind_tg_left = n - 1;
+	int ind_min_is_tangent_left = false;
+	int ind_min_is_tangent_right = false;
+	Point pmin = points[ind_min];
+	Point min_left = (ind_min == 0 ? points[n - 1] : points[ind_min - 1]);
+	Point min_right = (ind_min == n - 1 ? points[0] : points[ind_min + 1]);
+
+	int min_leftSign = A.x * min_left.y + pmin.x * A.y + pmin.y * min_left.x -
+		A.x * pmin.y - min_left.x * A.y - min_left.y * pmin.x;
+	std::cout << "Left : " << min_leftSign << "\n";
+	if (min_leftSign < 0.f)
+		min_leftSign = -1;
+	else if (min_leftSign > 0.f)
+		min_leftSign = 1;
 	else
-		ind_tg_left = ind_min - 1;
+		min_leftSign = 0;
 
-	bool found_tg_left = false;
-	while (found_tg_left == false && ind_min != ind_tg_left)
+	int min_rightSign = A.x * min_right.y + pmin.x * A.y + pmin.y * min_right.x -
+		A.x * pmin.y - min_right.x * A.y - min_right.y * pmin.x;
+	std::cout << "Right : " << min_rightSign << "\n";
+	if (min_rightSign < 0.f)
+		min_rightSign = -1;
+	else if (min_rightSign > 0.f)
+		min_rightSign = 1;
+	else
+		min_rightSign = 0;
+
+	if (min_leftSign == min_rightSign)
 	{
-		int ind_left;
-		int ind_right;
-
-		if (ind_tg_left == 0)
-		{
-			ind_left = n - 1;
-			ind_right = 1;
-		}
-		else if (ind_tg_left == n - 1)
-		{
-			ind_left = n - 2;
-			ind_right = 0;
-		}
+		std::cout << "Semn : " << min_leftSign << "\n";
+		if (min_leftSign == -1)
+			ind_min_is_tangent_right = true;
+		else if(min_leftSign == 1)
+			ind_min_is_tangent_left = true;
+		//else it is 0, so it is somewhere between a point and A, so there's no reason to keep it in the convex hull
+	}
+	
+	if (ind_min_is_tangent_left == false)
+	{
+		if (ind_min == 0)
+			ind_tg_left = n - 1;
 		else
+			ind_tg_left = ind_min - 1;
+
+
+		bool found_tg_left = false;
+		while (found_tg_left == false && ind_min != ind_tg_left)
 		{
-			ind_left = ind_tg_left - 1;
-			ind_right = ind_tg_left + 1;
-		}
+			int ind_left;
+			int ind_right;
 
-		Point P = points[ind_tg_left];
-		Point left = points[ind_left];
-		Point right = points[ind_right];
-
-		//delta(p,q,r) = 
-		// |  1  1  1 |
-		// | p1 q1 r1 |
-		// | p2 q2 r2 |
-		//if delta == 0 then R is on PQ
-		//if delta < 0 then R is on the right of PQ
-		//if delta > 0 then R is on the left of PQ
-		//in our case, P = P, Q = A, R = left or right
-		//that is :
-		//delta (P,A,R)
-		// |   1     1        1          |
-		// | P.x  A.x  left or right.x |
-		// | P.y  A.y  left or right.y |
-		int leftSign = A.x * left.y + P.x * A.y + P.y * left.x -
-					   A.x * P.y - left.x * A.y - left.y * P.x;
-
-		if (leftSign < 0)
-			leftSign = -1;
-		else if (leftSign > 0)
-			leftSign = 1;
-		else
-			leftSign = 0;
-
-		int rightSign = A.x * right.y + P.x * A.y + P.y * right.x -
-						A.x * P.y - right.x * A.y - right.y * P.x;
-
-		if (rightSign < 0)
-			rightSign = -1;
-		else if (rightSign > 0)
-			rightSign = 1;
-		else
-			rightSign = 0;
-
-		if (leftSign == rightSign)
-		{
-			found_tg_left = true;
-		}
-		else
-		{
 			if (ind_tg_left == 0)
-				ind_tg_left = n - 1;
+			{
+				ind_left = n - 1;
+				ind_right = 1;
+			}
+			else if (ind_tg_left == n - 1)
+			{
+				ind_left = n - 2;
+				ind_right = 0;
+			}
 			else
-				ind_tg_left--;
+			{
+				ind_left = ind_tg_left - 1;
+				ind_right = ind_tg_left + 1;
+			}
 
-			skipped_left++;
+			Point P = points[ind_tg_left];
+			Point left = points[ind_left];
+			Point right = points[ind_right];
+
+			//delta(p,q,r) = 
+			// |  1  1  1 |
+			// | p1 q1 r1 |
+			// | p2 q2 r2 |
+			//if delta == 0 then R is on PQ
+			//if delta < 0 then R is on the right of PQ
+			//if delta > 0 then R is on the left of PQ
+			//in our case, P = P, Q = A, R = left or right
+			//that is :
+			//delta (P,A,R)
+			// |   1     1        1          |
+			// | P.x  A.x  left or right.x |
+			// | P.y  A.y  left or right.y |
+			int leftSign = A.x * left.y + P.x * A.y + P.y * left.x -
+				A.x * P.y - left.x * A.y - left.y * P.x;
+
+			if (leftSign < 0)
+				leftSign = -1;
+			else if (leftSign > 0)
+				leftSign = 1;
+			else
+				leftSign = 0;
+
+			int rightSign = A.x * right.y + P.x * A.y + P.y * right.x -
+				A.x * P.y - right.x * A.y - right.y * P.x;
+
+			if (rightSign < 0)
+				rightSign = -1;
+			else if (rightSign > 0)
+				rightSign = 1;
+			else
+				rightSign = 0;
+
+			if (leftSign + rightSign != 0)
+			{
+				found_tg_left = true; std::cout << "Left P : " << P.x << " " << P.y << "\n";
+			}
+			else
+			{
+				if (ind_tg_left == 0)
+					ind_tg_left = n - 1;
+				else
+					ind_tg_left--;
+
+				skipped_left++;
+			}
 		}
 	}
+	else
+	{
+		skipped_left = 0;
+		ind_tg_left = ind_min;
+	}
 
-	std::cout << "here";
 	//step 2.2. move to the right and get the tangent
 	int ind_tg_right;
 	int skipped_right = 1;
-	if (ind_min == n - 1)
-		ind_tg_right = 0;
-	else
-		ind_tg_right = ind_min + 1;
-
-	bool found_tg_right = false;
-	while (found_tg_right == false && ind_min != ind_tg_right)
+	if (ind_min_is_tangent_right == false)
 	{
-		std::cout << "hey\n";
-		int ind_left;
-		int ind_right;
-
-		if (ind_tg_right == 0)
-		{
-			ind_left = n - 1;
-			ind_right = 1;
-		}
-		else if (ind_tg_right == n - 1)
-		{
-			ind_left = n - 2;
-			ind_right = 0;
-		}
+		if (ind_min == n - 1)
+			ind_tg_right = 0;
 		else
+			ind_tg_right = ind_min + 1;
+
+		bool found_tg_right = false;
+		while (found_tg_right == false && ind_min != ind_tg_right)
 		{
-			ind_left = ind_tg_right - 1;
-			ind_right = ind_tg_right + 1;
-		}
+			int ind_left;
+			int ind_right;
 
-		Point P = points[ind_tg_right];
-		Point left = points[ind_left];
-		Point right = points[ind_right];
-
-		int leftSign = A.x * left.y + P.x * A.y + P.y * left.x -
-			A.x * P.y - left.x * A.y - left.y * P.x;
-
-		if (leftSign < 0)
-			leftSign = -1;
-		else if (leftSign > 0)
-			leftSign = 1;
-		else
-			leftSign = 0;
-
-		int rightSign = A.x * right.y + P.x * A.y + P.y * right.x -
-			A.x * P.y - right.x * A.y - right.y * P.x;
-
-		if (rightSign < 0)
-			rightSign = -1;
-		else if (rightSign > 0)
-			rightSign = 1;
-		else
-			rightSign = 0;
-
-		if (leftSign == rightSign)
-		{
-			found_tg_right = true;
-		}
-		else
-		{
-			if (ind_tg_right == n - 1)
-				ind_tg_right = 0;
+			if (ind_tg_right == 0)
+			{
+				ind_left = n - 1;
+				ind_right = 1;
+			}
+			else if (ind_tg_right == n - 1)
+			{
+				ind_left = n - 2;
+				ind_right = 0;
+			}
 			else
-				ind_tg_right++;
+			{
+				ind_left = ind_tg_right - 1;
+				ind_right = ind_tg_right + 1;
+			}
 
-			skipped_right++;
+			Point P = points[ind_tg_right];
+			Point left = points[ind_left];
+			Point right = points[ind_right];
+
+			int leftSign = A.x * left.y + P.x * A.y + P.y * left.x -
+				A.x * P.y - left.x * A.y - left.y * P.x;
+
+			if (leftSign < 0)
+				leftSign = -1;
+			else if (leftSign > 0)
+				leftSign = 1;
+			else
+				leftSign = 0;
+
+			int rightSign = A.x * right.y + P.x * A.y + P.y * right.x -
+				A.x * P.y - right.x * A.y - right.y * P.x;
+
+			if (rightSign < 0)
+				rightSign = -1;
+			else if (rightSign > 0)
+				rightSign = 1;
+			else
+				rightSign = 0;
+
+			//leftSign + rightSign != 0 means they we don't accept when they are on different sides or on the same line
+			//however, we should never worry about them being on the same line since all polygon angles are less than 180 degrees
+			if (leftSign + rightSign != 0)
+			{
+				found_tg_right = true;
+				std::cout << "Right P : " << P.x << " " << P.y << "\n";
+			}
+			else
+			{
+				if (ind_tg_right == n - 1)
+					ind_tg_right = 0;
+				else
+					ind_tg_right++;
+
+				skipped_right++;
+			}
 		}
 	}
+	else
+	{
+		skipped_right = 0;
+		ind_tg_right = ind_min;
+	}
 
-	std::cout << "Left tangent : " << points[ind_tg_left].x << " " << points[ind_tg_left].y << "\n";
-	std::cout << "Right tangent : " << points[ind_tg_right].x << " " << points[ind_tg_right].y << "\n";
+	//std::cout << "Left tangent : " << points[ind_tg_left].x << " " << points[ind_tg_left].y << "\n";
+	//std::cout << "Right tangent : " << points[ind_tg_right].x << " " << points[ind_tg_right].y << "\n";
 
 	//return convex hull
 	sf::ConvexShape shape;
 
 	int nr_now = n - skipped_left - skipped_right + 1 + 1; //first + 1 because they are both counting points[ind_min]. second +1 because we add A
+	//if (ind_min_is_tangent_left || ind_min_is_tangent_right)
+		//nr_now -= 1; //small fix
+
 	Point * convexHullPoints = new Point[nr_now];
 
 	convexHullPoints[0] = A;
@@ -252,6 +310,7 @@ void AppManager::solve()
 
 	ResourceManager::getInstance()->setConvexHullPoints(convexHullPoints, nr_now);
 
+	std::cout << "nr_now : " << nr_now << "\n";
 	for (int i = 0; i < nr_now; i++)
 		std::cout << convexHullPoints[i].x << " " << convexHullPoints[i].y << "\n";
 

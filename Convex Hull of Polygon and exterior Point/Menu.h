@@ -31,6 +31,8 @@ class Menu
 
 		sf::Text generalText;
 
+		sf::Text helpText;
+
 		sf::RectangleShape container;
 
 		int state;
